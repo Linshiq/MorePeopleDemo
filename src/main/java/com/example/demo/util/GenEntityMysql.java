@@ -126,7 +126,9 @@ public class GenEntityMysql {
 				for (int i = 0; i < size; i++) {
 					colnames[i] = rsmd.getColumnName(i + 1).toLowerCase();
 					colTypes[i] = rsmd.getColumnTypeName(i + 1);
-
+					rsmd.isNullable(i+1);
+					// 是否自动递增
+					boolean isAutoInctement=rsmd.isAutoIncrement(i+1);
 					if (colTypes[i].equalsIgnoreCase("datetime")) {
 						f_util = true;
 					}
