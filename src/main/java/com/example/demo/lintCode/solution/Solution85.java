@@ -9,7 +9,6 @@ public class Solution85 {
     public TreeNode insertNode(TreeNode root, TreeNode node) {
         // write your code here
         if (root == null) {
-            root = node;
             return node;
         }
         if (root.right == null) {
@@ -20,27 +19,24 @@ public class Solution85 {
             root.left = node;
             return root;
         }
-        TreeNode left = root.left;
-        TreeNode right = root.right;
-        if (!isNull(right,node)) {
-            isNull(left, node);
-        }
-        return root;
-    }
 
-    private boolean isNull(TreeNode root,TreeNode node) {
-        if (root.right == null) {
-            root.right = node;
-            return true;
+        TreeNode curRoot = root;
+
+        while(curRoot != node){
+            if(node.val < curRoot.val){
+                if(curRoot.left == null) {
+                    curRoot.left = node;
+                }
+                curRoot = curRoot.left;
+            } else {
+                if (curRoot.right == null) {
+                    curRoot.right = node;
+                }
+                curRoot = curRoot.right;
+            }
         }
-        if (root.left == null) {
-            root.left = node;
-            return true;
-        }
-        if (!isNull(root.right,node)) {
-            return isNull(root.left, node);
-        }
-        return false;
+
+        return root;
     }
 
     public class TreeNode {

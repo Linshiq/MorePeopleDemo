@@ -21,7 +21,11 @@ public class GenJPAEntityMysql {
     private static final String PASS = "qqqq";
     private static final String DRIVER = "com.mysql.jdbc.Driver";
 
+    // 指定表名,不指定则获取全部表名
+    private static List<String> tabbeNames = new ArrayList<>();
+
     public static void main(String[] args) throws Exception {
+       tabbeNames.add("test");
         GenJPAEntityMysql s = new GenJPAEntityMysql();
         s.process();
     }
@@ -33,7 +37,12 @@ public class GenJPAEntityMysql {
      */
     public void process() throws Exception {
         Connection con = createConn();
-        List<String> tablenames = getAllTableName(con);
+        List<String> tablenames;
+        if (tabbeNames == null || tabbeNames.size() == 0){
+            tablenames = getAllTableName(con);
+        } else {
+            tablenames = tabbeNames;
+        }
         Map<String, List<String>> tablenameKeyCommentsValueMap = getAllColumnComments(con, tablenames);
         Map<String, List<String>> tablenameKeyPriKeysValueMap = getPriKeyInfo(con, tablenames);
         createEntity(con, tablenames, tablenameKeyCommentsValueMap, tablenameKeyPriKeysValueMap);
@@ -65,7 +74,6 @@ public class GenJPAEntityMysql {
 
             String content = createSingleEntity(tablename, tableColumns, tablenameKeyCommentsValueMap.get(tablename));
             createJavaEntity(content, tablename);
-
         }
     }
 
@@ -117,7 +125,7 @@ public class GenJPAEntityMysql {
         boolean loadDecimalPackage = false;
         for (TableColumn tableColumn : tableColumns) {
             String colType = tableColumn.columnType.toLowerCase();
-            if (colType.equalsIgnoreCase("datetime")) {
+            if (colType.equalsIgnoreCase("datetime") || colType.equalsIgnoreCase("timestamp")) {
                 loadUtilPackage = true;
             }
             if (colType.equalsIgnoreCase("image") || colType.equalsIgnoreCase("text")) {
