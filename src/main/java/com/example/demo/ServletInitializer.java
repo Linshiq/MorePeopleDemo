@@ -29,8 +29,8 @@ import org.springframework.context.ConfigurableApplicationContext;
  *         </p>
  */
 @SpringBootApplication // 打包到服务器要记得把他补上
-@EnableAutoConfiguration(exclude={DataSourceAutoConfiguration.class}) // 需要连接数据库就把这个去掉
-//@EnableAutoConfiguration // 本人表示，一定要有这个标签(不然，你会吃亏的)
+//@EnableAutoConfiguration(exclude={DataSourceAutoConfiguration.class}) // 需要连接数据库就把这个注释去掉
+@EnableAutoConfiguration // 本人表示，一定要有这个标签(不然，你会吃亏的)
 public class ServletInitializer extends SpringBootServletInitializer {
 	
 	private static final Logger logger = LoggerFactory.getLogger(ServletInitializer.class);
